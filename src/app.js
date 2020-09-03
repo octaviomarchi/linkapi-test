@@ -18,7 +18,8 @@ mongoose
   });
 
 //Carrega as rotas
-const indexRoute = require("./routes/index-route");
+// const indexRoute = require("./routes/index-route");
+const pipedriveRoute = require("./routes/pipedrive-route");
 
 app.use(
   bodyParser.json({
@@ -42,6 +43,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/", indexRoute);
+// app.use("/", indexRoute);
+app.use("/pipedrive", pipedriveRoute);
 
 module.exports = app;
