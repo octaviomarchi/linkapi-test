@@ -19,7 +19,8 @@
   "homepage": "https://github.com/octaviomarchi/linkapi-test#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.10.2"
+    "mongoose": "^5.10.2",
+    "pipedrive": "^10.4.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
