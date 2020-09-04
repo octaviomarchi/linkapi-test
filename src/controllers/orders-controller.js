@@ -6,9 +6,14 @@ const bling = require("../integrations/bling");
 const xmlbuilder = require("xmlbuilder");
 
 exports.getOrders = async (req, res, next) => {
+  //get pipedrive deals
   const pipedriveDeals = await getPipedriveWonDeals();
+
+  //transform the delas into bling xml request format
   const blingXml = pipedriveOrderToBlingXml(pipedriveDeals);
 
+  // get all the return
+  const blingOrders = await bling.postOrder(blingXml);
   
 };
 
@@ -38,9 +43,10 @@ function pipedriveOrderToBlingXml(pipedriveOrders) {
       .ele("numero", {}, order.id).up()
       .ele("itens")
         .ele("item")
+          .ele("codigo", {}, "999")
           .ele("descricao", {}, "produto da venda").up()
           .ele("qtde", {}, 1).up()
-          .ele("vlr_unit", {}, order.weighted_value).up()
+          .ele("vlr_unit", {}, parseFloat(order.weighted_value).toFixed(2) ).up()
         .up()
       .up();
   });
