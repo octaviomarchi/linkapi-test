@@ -10,8 +10,7 @@ async function makeRequest(method, route, data) {
         baseURL: blingBaseUrl,
         url: route,
         method: method,
-        data: data,
-        params: { apikey: config.blingToken },
+        params: { apikey: config.blingToken, xml: data },
       })
       .then((response) => {
         return response;
