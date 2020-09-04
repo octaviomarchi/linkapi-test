@@ -23,7 +23,7 @@ exports.postOrder = async (order) => {
   const route = "/pedido/json/";
   try {
     const createdOrder = await makeRequest("post", route, order);
-    return createdOrder;
+    return createdOrder.data;
   } catch (error) {
     console.log("Error on bling.postOrder:");
     console.log(error);

@@ -11,16 +11,21 @@ mongoose
   .connect(config.mongoConnectionString, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(() => console.log("DB Connected!"))
   .catch((err) => {
     console.log("DB Connection Error: ${err.message}");
   });
 
+// Carrega os models
+const Order = require("./models/order");
+
 //Carrega as rotas
 const indexRoute = require("./routes/index-route");
 const pipedriveRoute = require("./routes/pipedrive-route");
-const ordersRoute = require("./routes/orders-route")
+const ordersRoute = require("./routes/orders-route");
 
 app.use(
   bodyParser.json({
