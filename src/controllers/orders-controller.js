@@ -97,6 +97,3 @@ function pipedriveDealsToOrderModels(pipedriveDeals) {
   return orderModels;
 }
 
-function orderModelsToReturnObject(orderModels){
-  
-}
