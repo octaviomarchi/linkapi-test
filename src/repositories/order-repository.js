@@ -22,6 +22,6 @@ exports.createOrders = async (orders) => {
 };
 
 exports.findAll = async () => {
-  const orders = await Order.find({}, 'idPedido valor dataPedido -_id');
+  const orders = await Order.find({}, 'idPedido valor dataPedido -_id', {sort: {date: -1}});
   return orders;
 };

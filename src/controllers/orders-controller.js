@@ -9,10 +9,12 @@ exports.getOrders = async (req, res, next) => {
   const pipedriveDeals = await getPipedriveWonDeals();
 
   //transform the deals into bling xml request format
-  const blingXml = pipedriveDealsToBlingXml(pipedriveDeals);
+  const blingXmlArray = pipedriveDealsToBlingXml(pipedriveDeals);
 
   // get all the return
-  bling.postOrder(blingXml);
+  blingXmlArray.forEach(blingXml => {
+    bling.postOrder(blingXml);
+  });
 
   // prepare orders to be saved in the db
   const orderModels = pipedriveDealsToOrderModels(pipedriveDeals);
@@ -51,9 +53,10 @@ async function getPipedriveWonDeals() {
 }
 
 function pipedriveDealsToBlingXml(pipedriveDeals) {
-  let root = xmlbuilder.begin().dec("1.0", "UTF-8");
+  const xmlArray = [];
 
   pipedriveDeals.data.forEach((order) => {
+    let root = xmlbuilder.begin().dec("1.0", "UTF-8");
     let pedido = root.ele("pedido");
     // prettier-ignore
     pedido
@@ -64,16 +67,18 @@ function pipedriveDealsToBlingXml(pipedriveDeals) {
       .ele("numero", {}, order.id).up()
       .ele("itens")
         .ele("item")
-          .ele("codigo", {}, "999").up
+          .ele("codigo", {}, "999").up()
           .ele("descricao", {}, "produto da venda").up()
           .ele("qtde", {}, 1).up()
           .ele("vlr_unit", {}, parseFloat(order.weighted_value).toFixed(2)).up()
         .up()
       .up();
+      
+      const xml = root.end();
+      xmlArray.push(xml);
   });
 
-  const xml = root.end();
-  return xml;
+  return xmlArray;
 }
 
 function pipedriveDealsToOrderModels(pipedriveDeals) {
@@ -90,4 +95,8 @@ function pipedriveDealsToOrderModels(pipedriveDeals) {
   });
 
   return orderModels;
+}
+
+function orderModelsToReturnObject(orderModels){
+  
 }
